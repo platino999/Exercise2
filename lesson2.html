@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CHANGED</title>
+  </head>
+  <body>
+    <div id="email"></div>
+  </body>
+  <!-- No additional HTML needed; update the JS functions above -->
+
+  <script>
+    // validate email
+    function validateEmail(email) {
+      if (typeof email !== "string") email = String(email);
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email.toLowerCase());
+    }
+    console.log(validateEmail("lolade@12"));
+
+    // validate phone number
+    function validatePhoneNumber(phone) {
+      if (typeof phone !== "string") phone = String(phone);
+      const re = /^\d{11}$/;
+      return re.test(phone);
+    }
+    console.log(validatePhoneNumber("08012456785"));
+    console.log(validatePhoneNumber(08012456781)); // why is this returning false?
+    console.log(validatePhoneNumber("08012345678"));
+  </script>
+</html>

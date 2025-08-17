@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- CREATING A SIMPLE NOTE APP THAT SAVES NOTE TO THE BROWSER -->
+    <input type="text" id="username" />
+    <button type="button" id="saveButton">Save</button>
+    <ul id="saveHere"></ul>
+    <div id="demo"></div>
+    <div id="demo1"></div>
+    <br />
+    <button id="sortA-Z">SORTAZ</button>
+    <button id="sortZ-A">SORTZA</button>
+    <div id="space2"></div>
+
+    <!-- EDIT THE CONTACT LIST SPACE -->
+    <div id="editHome"></div>
+    <div id="dummyspace"></div>
+    <!-- <div id="dummyspace2"></div> -->
+    <input type="text" name="search" id="search" />
+    <div id="dummyspace3"></div>
+
+    <br />
+    <br /><br />
+    <!-- FETCH, EDIT, SAVE, DELETE -->
+    <input type="text" name="filterTwo" id="filterTwo" />
+    <div id="myDisplaySpace"></div>
+    <div id="myDisplaySpace2"></div>
+
+    <!-- JAVA -->
+    <script>
+      // GET THE AVERAGE, THE MAX, THE MIN, THE SUM
+      const numbers = [12, 45, 78, 23, 56, 90, 11];
+
+      function getStats(b) {
+        return `${Math.max(...b)}, ${Math.min(...b)}, ${
+          numbers.reduce((acc, a) => acc + a) / numbers.length
+        }, ${numbers.reduce((acc, a) => acc + a)}`;
+      }
+      console.log("this are the stats: " + getStats(numbers));
+
+      {
+        // OBJECT AND METHODS
+        const students = {
+          name: "John",
+          scores: [70, 89, 78, 90],
+          getAverage() {
+            const sum =
+              this.scores.reduce((acc, b) => (acc += b)) / this.scores.length;
+            return sum;
+          },
+          getSummary() {
+            const all = `${
+              this.name
+            } scored an avaerage of ${this.getAverage()}`;
+            return all;
+          },
+        };
+        console.log(students.getSummary());
+      }
+      {
+        //  CREATING A SIMPLE NOTE APP THAT SAVES NOTE TO THE BROWSER
+        const username = document.querySelector("#username");
+        const save = document.querySelector("#saveButton");
+        const house = document.querySelector("#saveHere");
+        const demo = document.querySelector("#demo");
+
+        // JUST TO DISPLAY THE SAVED ITEMS
+        window.onload = function toStore() {
+          const home = JSON.parse(localStorage.getItem("myUser")) || [];
+          home.forEach((x) => data(x));
+          demo.innerHTML = home;
+        };
+
+        // THE MAIN CHARACTER
+        save.addEventListener("click", (e) => {
+          e.preventDefault(); // TO PREVENT DEFAULT
+          const user = username.value.trim(); // GET THE VALUE
+          const v = JSON.parse(localStorage.getItem("myUser")) || []; // TO GET THE STORED VALUE IF NOT, RETURN AN ARRAY
+          v.push(user);
+          if (user == "") {
+            alert("ENTER BITCH");
+          } else {
+            localStorage.setItem("myUser", JSON.stringify(v)); // STORE IT AND NAME IT myUser
+            data(user);
+            username.value = "";
+          }
+        });
+        //TO STORE
+        function data(a) {
+          const div = document.createElement("li");
+          div.textContent = a;
+          house.appendChild(div);
+        }
+
+        // SORT
+        // console.log(toStore());
+      }
+      {
+        const a = [1, 3, 5];
+        const b = Math.max(...a);
+        console.log(b);
+      }
+
+      // SORT A - Z AND Z - A
+      {
+        const AZ = document.querySelector("#sortA-Z");
+        const ZA = document.querySelector("#sortZ-A");
+        const space2 = document.querySelector("#space2");
+
+        let contacts = [
+          { name: "Zara", Phone: "081000000001" },
+          { name: "David", Phone: "08101100001" },
+        ];
+        // TO LOAD
+        window.onload = function screen() {
+          const a = JSON.parse(localStorage.getItem("order")) || [];
+          data(a);
+        };
+        // MAIN
+        AZ.addEventListener("click", (e) => {
+          e.preventDefault();
+          const az = contacts.sort((a, b) => a.name.localeCompare(b.name));
+          // const v = JSON.parse(localStorage.getItem("order")) || []; // TO GET THE STORED VALUE IF NOT, RETURN AN ARRAY
+          // v.push(az);
+          localStorage.setItem("order", JSON.stringify(az));
+          data(az);
+          console.log(az);
+        });
+        // MAIN
+        ZA.addEventListener("click", (e) => {
+          e.preventDefault();
+          const za = contacts.sort((a, b) => b.name.localeCompare(a.name));
+          data(za);
+          console.log(za);
+        });
+
+        function data(a) {
+          const space = document.querySelector("#demo1");
+          space.innerHTML = "";
+          a.forEach((x) => {
+            const div = document.createElement("div");
+            div.textContent = `${x.name}, ${x.Phone}`;
+            space.appendChild(div);
+          });
+        }
+      }
+
+      // EDIT THE CONTACTS LIST AND SAVE IT
+
+      {
+        const home = document.querySelector("#editHome");
+        const contacts = JSON.parse(localStorage.getItem("contacts")) || [
+          //fix
+          {
+            name: "John Doe",
+            email: "johndoe123@gmail.com",
+            phone: "08022222229",
+          },
+          {
+            name: "Cavin Smith",
+            email: "calvinsmith234@gmail.com",
+            phone: "08100000001",
+          },
+        ];
+
+        // THE DISPLAY CONTACTS
+        function display(contacts) {
+          home.innerHTML = ""; // fix
+          console.log(contacts);
+          contacts.forEach((x, index) => {
+            const parent = document.createElement("div");
+            const child = document.createElement("span");
+            child.textContent = `${x.name}, ${x.email}, ${x.phone}`;
+            const edit = document.createElement("button");
+            edit.textContent = "Edit";
+            // TO EDIT
+            edit.addEventListener("click", () => {
+              parent.innerHTML = ""; //fix
+              // THE NAME INPUT
+              const nameInput = document.createElement("input");
+              nameInput.value = x.name; // The VALUES is just to set the default
+              // THE EMAIL INPUT
+              const emailInput = document.createElement("input");
+              emailInput.value = x.email;
+              //THE PHONE INPUT
+              const phoneInput = document.createElement("input");
+              phoneInput.value = x.phone;
+              // SAVE BUTTON
+              const saveButton = document.createElement("button"); //SAVE BUTTON
+              saveButton.textContent = "Save";
+              // SAVE WORLD
+              saveButton.addEventListener("click", () => {
+                contacts[index] = {
+                  name: nameInput.value,
+                  email: emailInput.value,
+                  phone: phoneInput.value,
+                };
+
+                localStorage.setItem("contacts", JSON.stringify(contacts));
+                display(contacts); // TO REVERT BACK TO THE INITIAL DISPLAY
+              });
+              parent.append(nameInput, emailInput, phoneInput, saveButton);
+            });
+            parent.append(child, edit);
+            home.appendChild(parent);
+          });
+        }
+        window.onload = () => display(contacts);
+
+        const a = display(contacts);
+      }
+
+      //FILTER NAME AND EMAIL
+      {
+        const space = document.querySelector("#dummyspace3");
+        const space2 = document.querySelector("#dummyspace4");
+        const search = document.getElementById("search");
+        let contacts = [];
+        let sigh = [];
+        async function online(e) {
+          try {
+            const dataOnline = await fetch(
+              "https://jsonplaceholder.typicode.com/users"
+            );
+            const responseOnline = await dataOnline.json();
+            // contacts = responseOnline;
+            sigh = [...responseOnline];
+            displayData(sigh);
+            console.log(sigh);
+          } catch (error) {
+            return console.log("Error Bitch", error);
+          }
+        }
+
+        // TEMPLATE TO DISPLAY
+        function displayData(value) {
+          space.innerHTML = "";
+
+          const input = document.createElement("input");
+          value.forEach((x) => {
+            const parent = document.createElement("div");
+            const span = document.createElement("span");
+            span.textContent = ` Name: ${x.name} - Email: ${x.email}, - Username :${x.username}`;
+            parent.appendChild(span);
+            space.appendChild(parent);
+          });
+        }
+        // TO FILTER
+        search.addEventListener("input", () => {
+          const searchValue = search.value.toLowerCase();
+          const filtered = sigh.filter((x) => {
+            const a = x.name.toLowerCase().includes(searchValue);
+            const b = x.email.toLowerCase().includes(searchValue);
+            return a || b; // TO RETURN EITHER
+
+            // return a;
+
+            console.log(a);
+          });
+          displayData(filtered);
+          console.log(searchValue);
+        });
+        online();
+      }
+      //EDIT, SAVE, STORE, LOAD, FILTER
+      {
+        const displaySpace = document.querySelector("#myDisplaySpace");
+        const displaySpace2 = document.querySelector("#myDisplaySpace2");
+        const filter = document.querySelector("#filterTwo");
+        let store = [];
+
+        // ON LOAD
+        window.onload = function loadUp() {
+          displaySpace2.innerHTML = "";
+          const load = JSON.parse(localStorage.getItem("storeUp")) || [];
+          store = [...load];
+          display(store);
+          console.log(load);
+          // displaySpace2.innerHTML = load;
+        };
+        async function online(e) {
+          try {
+            const fetchOnline = await fetch(
+              "https://jsonplaceholder.typicode.com/users"
+            );
+            const response = await fetchOnline.json();
+            store = [...response];
+            display(store);
+            // localStorage.setItem("storeUp", JSON.stringify(store));
+            console.log(store);
+          } catch (error) {
+            return console.log("Error Bitch", error);
+          }
+        }
+
+        //DISPLAY TEMPLATE
+        function display(x) {
+          displaySpace.innerHTML = "";
+          x.forEach((value, index) => {
+            const parent = document.createElement("div");
+            const child = document.createElement("span");
+            child.textContent = `${value.id}: ${value.name}, ${value.email}, ${value.phone}`;
+            const editbtn = document.createElement("button");
+            editbtn.textContent = "Edit";
+
+            // EDIT ACTION
+            editbtn.addEventListener("click", () => {
+              parent.innerHTML = "";
+              const nameInput = document.createElement("input");
+              nameInput.value = value.name;
+              const emailInput = document.createElement("input");
+              emailInput.value = value.email;
+              const phoneInput = document.createElement("input");
+              phoneInput.value = value.phone;
+              const saveBtn = document.createElement("button");
+              saveBtn.textContent = "save";
+              //THE SAVE ACTION
+              saveBtn.addEventListener("click", () => {
+                const itemIndex = store.findIndex(
+                  (item) => item.id === value.id
+                );
+                if (itemIndex !== -1) {
+                  store[itemIndex] = {
+                    ...store[itemIndex],
+                    name: nameInput.value,
+                    email: emailInput.value,
+                    phone: phoneInput.value,
+                  };
+                  localStorage.setItem("storeUp", JSON.stringify(store));
+                  display(store);
+                }
+              });
+
+              parent.append(nameInput, emailInput, phoneInput, saveBtn);
+            });
+            const deletebtn = document.createElement("button");
+            deletebtn.textContent = "Delete";
+            deletebtn.addEventListener("click", () => {
+              parent.remove();
+            });
+            parent.append(child, editbtn, deletebtn);
+            displaySpace.appendChild(parent);
+          });
+        }
+        // TO FILTER
+
+        filter.addEventListener("input", (e) => {
+          e.preventDefault();
+          const filterValue = filter.value.toLowerCase();
+          const filtered = store.filter((x) =>
+            x.name.toLowerCase().includes(filterValue)
+          );
+
+          display(filtered);
+          console.log(filtered);
+        });
+        loadUp();
+        online();
+      }
+    </script>
+  </body>
+</html>
